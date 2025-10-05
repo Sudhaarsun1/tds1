@@ -1,38 +1,37 @@
-name: prime-cache-9e62e67
+# .github/workflows/caching.yml
+
+name: Caching Demo
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: prime-cache-9e62e67
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: prime-cache-9e62e67
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
 
-      - name: prime-cache-9e62e67
-        id: cache-npm-deps 
+      - name: Cache npm dependencies
+        id: cache-npm-deps # An ID is needed to reference the output of this step
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: cache-9e62e67
+          path: ~/.npm # The directory to cache
+          key: cache-9e62e67 # The specific key you requested
 
-      - name: prime-cache-9e62e67 # <-- This is the display name shown in the UI
-        id: prime-cache-9e62e67   # <-- This is the ID used to reference the step
-        run: echo "Cache hit was: ${{ steps.cache-npm-deps.outputs.cache-hit }}"
+      - name: prime-cache-9e62e67 # The specific step name you requested
+        run: echo "Cache hit status: ${{ steps.cache-npm-deps.outputs.cache-hit }}"
 
-      - name: prime-cache-9e62e67
-        # We still refer to the cache step by its ID
+      - name: Install dependencies if cache missed
+        # This step only runs if the cache was not restored
         if: steps.cache-npm-deps.outputs.cache-hit != 'true'
         run: npm install
-
-      - name: prime-cache-9e62e67
-        run: echo "Running build command..."
