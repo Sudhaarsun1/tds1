@@ -19,23 +19,20 @@ jobs:
           node-version: '20.x'
 
       - name: Cache Node.js modules
-        id: cache-npm-deps # Give the step an ID to reference its output
+        id: cache-npm-deps 
         uses: actions/cache@v4
         with:
-          # The directory to cache
           path: ~/.npm
-          # The specific key to use for restoring and saving the cache
           key: cache-9e62e67
 
-      - name: Report cache hit/miss result
-        id: prime-cache-9e62e67
+      - name: prime-cache-9e62e67 # <-- This is the display name shown in the UI
+        id: prime-cache-9e62e67   # <-- This is the ID used to reference the step
         run: echo "Cache hit was: ${{ steps.cache-npm-deps.outputs.cache-hit }}"
 
       - name: Install dependencies if cache was missed
-        # Only run 'npm install' if the cache was not restored
+        # We still refer to the cache step by its ID
         if: steps.cache-npm-deps.outputs.cache-hit != 'true'
         run: npm install
 
       - name: Build project
-        # This step would run your build command, e.g., npm run build
         run: echo "Running build command..."
